@@ -5,10 +5,17 @@ export default async function ProduitsPage() {
   const res = await fetch(`${base}/api/produits?populate=*`, {
     cache: "no-store",
     headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) {
-    return <main style={{padding:40}}><h1>Erreur Strapi {res.status}</h1></main>;
+  }).catch((e) => null);
+
+  if (!res || !res.ok) {
+    return (
+      <main style={{padding:40}}>
+        <h1>Impossible de charger les produits</h1>
+        <p>Vérifie le token et l’URL Strapi dans Vercel.</p>
+      </main>
+    );
   }
+
   const data = await res.json();
 
   return (
